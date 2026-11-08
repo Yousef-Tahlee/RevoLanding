@@ -1,5 +1,2 @@
 User-agent: *
 Allow: /
-
-# Add once the domain is known:
-# Sitemap: https://DOMAIN/sitemap.xml

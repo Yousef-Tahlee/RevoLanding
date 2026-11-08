@@ -16,7 +16,7 @@ window.REVO_CONFIG = {
 
   // Public address of this page once it has a domain, e.g. "https://example.com/".
   // Used for sharing. Also update the canonical / og:url / og:image lines in index.html.
-  siteUrl: "",
+  siteUrl: "https://start.revotech.systems/",
 
   // Colour set: "prompt" = Deep Black, White, Electric Blue (the master prompt).
   //             "brand"  = Oxford, Icy, Persimmon, Pale Sky (the REVO brand kit).
