@@ -272,7 +272,7 @@
       if (f.type === "text") {
         block = el("div", { class: "q" });
         var lab = el("label", { class: "field-label", for: "d-" + f.id }, f.label + " ");
-        lab.appendChild(el("span", { class: "optional" }, "(اختياري، للتجربة فقط)"));
+        lab.appendChild(el("span", { class: "optional" }, "(اختياري)"));
         block.appendChild(lab);
         block.appendChild(el("input", { class: "field", type: "text", id: "d-" + f.id, name: f.id,
           maxlength: "40", autocomplete: "off", placeholder: f.placeholder || "" }));
