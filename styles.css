@@ -644,3 +644,28 @@ html:not(.motion) .sticky-cta, html:not(.motion) .demo-peek { transition: none; 
 
 /* ---------- Dev-only reminder (localhost) ---------- */
 .dev-banner { background: var(--ink); color: var(--on-dark); font-size: var(--fs-xs); text-align: center; padding: 6px 12px; }
+
+/* ---------- Personalised client demo (/for/<slug>/) ---------- */
+.client-page { padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+.client-bar { background: var(--ink); color: var(--on-dark); padding-block: 18px 22px; }
+.client-bar .wordmark { color: var(--logo-dark); height: 18px; }
+.client-bar .brand { padding: 4px 0 10px; }
+.client-for { font-size: var(--fs-small); color: var(--on-dark-soft); font-weight: 500; }
+.client-name { font-size: clamp(1.4rem, 1.1rem + 1.5vw, 2rem); font-weight: 700; line-height: 1.35; }
+.client-problem { margin-top: 8px; font-size: var(--fs-small); color: var(--on-dark-soft); max-width: 40em; padding-inline-start: 12px; border-inline-start: 3px solid var(--marigold); }
+.client-demo h1 { font-size: var(--fs-h2); max-width: 24ch; }
+.client-demo .demo-grid { margin-top: var(--s5); }
+.btn-blue { background: var(--blue-strong); color: #FFFFFF; width: 100%; margin-top: var(--s4); }
+.btn-blue[aria-disabled="true"] { background: color-mix(in srgb, var(--blue-strong) 55%, var(--paper)); }
+@media (hover: hover) { .btn-blue:hover { background: #285EA9; } }
+@media (min-width: 560px) { .btn-blue { width: auto; } }
+.client-next .btn-primary { margin-top: var(--s5); }
+.claim-bar {
+  position: fixed; inset-inline: 0; bottom: 0; z-index: 30;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s3);
+  padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom));
+  background: var(--surface); border-top: 1px solid var(--line-strong);
+  font-weight: 700; font-size: var(--fs-small);
+}
+.claim-bar .btn { min-height: 48px; width: auto; padding-inline: 18px; flex: none; }
+@media (max-width: 359px) { .claim-bar > span { display: none; } .claim-bar .btn { width: 100%; } }
