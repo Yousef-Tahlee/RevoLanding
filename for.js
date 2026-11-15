@@ -150,16 +150,30 @@
 
   // Phase 3 radar: tells REVO's n8n that this page was opened or tried. It sends only the page
   // id, the company name already shown on the page, and the event. No device, no visitor data.
-  // Off until config.js has demoTrackingUrl. Team browsers opt out once with ?revo=1.
+  // Off until config.js has demoTrackingUrl. Team browsers opt out once with ?revo=1 (every link
+  // on REVO's n8n board carries it); ?revo=0 undoes it. The flag is then removed from the address
+  // bar, so a link copied from there and sent to a client is always the clean one.
   var slugMatch = /\/for\/([a-z0-9-]+)\/?/.exec(location.pathname);
   var slug = slugMatch ? slugMatch[1] : "";
   function teamBrowser() {
     try {
-      if (/[?&]revo=1\b/.test(location.search)) localStorage.setItem("revo_team", "1");
+      var m = /[?&]revo=([01])\b/.exec(location.search);
+      if (m) {
+        if (m[1] === "1") localStorage.setItem("revo_team", "1"); else localStorage.removeItem("revo_team");
+        if (history.replaceState) history.replaceState(null, "", location.pathname + location.hash);
+      }
       return localStorage.getItem("revo_team") === "1";
     } catch (e) { return false; }
   }
-  var trackingOn = !!(cfg.demoTrackingUrl && slug && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && !teamBrowser());
+  var isTeam = teamBrowser();
+  if (isTeam) {
+    var pill = document.createElement("p");
+    pill.className = "team-pill";
+    pill.setAttribute("role", "status");
+    pill.textContent = "وضع الفريق: هالجهاز ما بينحسب";
+    document.body.appendChild(pill);
+  }
+  var trackingOn = !!(cfg.demoTrackingUrl && slug && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && !isTeam);
   var sent = {};
   function track(ev) {
     if (!trackingOn || sent[ev]) return;
