@@ -148,6 +148,37 @@
     a.href = revo ? "https://wa.me/" + revo + "?text=" + encodeURIComponent(claimMsg) : (cfg.instagramUrl || "#");
   });
 
+  // Phase 3 radar: tells REVO's n8n that this page was opened or tried. It sends only the page
+  // id, the company name already shown on the page, and the event. No device, no visitor data.
+  // Off until config.js has demoTrackingUrl. Team browsers opt out once with ?revo=1.
+  var slugMatch = /\/for\/([a-z0-9-]+)\/?/.exec(location.pathname);
+  var slug = slugMatch ? slugMatch[1] : "";
+  function teamBrowser() {
+    try {
+      if (/[?&]revo=1\b/.test(location.search)) localStorage.setItem("revo_team", "1");
+      return localStorage.getItem("revo_team") === "1";
+    } catch (e) { return false; }
+  }
+  var trackingOn = !!(cfg.demoTrackingUrl && slug && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && !teamBrowser());
+  var sent = {};
+  function track(ev) {
+    if (!trackingOn || sent[ev]) return;
+    sent[ev] = true;
+    var u = cfg.demoTrackingUrl + (cfg.demoTrackingUrl.indexOf("?") === -1 ? "?" : "&") +
+      "slug=" + encodeURIComponent(slug) + "&event=" + ev + "&name=" + encodeURIComponent(client.name);
+    try { fetch(u, { method: "GET", mode: "no-cors", keepalive: true, credentials: "omit" }).catch(function () {}); } catch (e) { /* never block the page */ }
+  }
+  (function () {
+    var key = "revo_open_" + slug, seen = false;
+    try { seen = sessionStorage.getItem(key) === "1"; sessionStorage.setItem(key, "1"); } catch (e) {}
+    if (!seen) track("open");
+  })();
+  form.addEventListener("change", function () { track("tried"); });
+  sendBtn.addEventListener("click", function () { if (sendBtn.getAttribute("aria-disabled") === "false") track("send_test"); });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-claim]"), function (a) {
+    a.addEventListener("click", function () { track("claim"); });
+  });
+
   // Reveal on scroll, same behaviour as the main page.
   var items = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
   if (!motionOK || !("IntersectionObserver" in window)) { items.forEach(function (n) { n.classList.add("is-in"); }); }

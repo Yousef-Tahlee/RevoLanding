@@ -27,6 +27,10 @@ window.REVO_CONFIG = {
   // this file is public.
   webhookUrl: "",
 
+  // Client demo pages (/for/<slug>/): REVO's n8n "radar" webhook (production URL of the
+  // revo-demo-radar workflow). Leave "" to keep it off. It receives only slug, event and company name.
+  demoTrackingUrl: "",
+
   // Analytics stays off until real IDs exist AND consent is handled.
   // No tracking script is loaded by this page. Fill these in only together with
   // the matching snippet and a consent step where the law requires one.
